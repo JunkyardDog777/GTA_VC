@@ -1,0 +1,659 @@
+import TriggerEditor.TETools as tt;
+import TLCTools;
+
+var sceneTimer;
+var movieStarted;
+var movieOver;
+var screenBrightness = 310;
+var introOver;
+var camX;
+var camY;
+var camXmod;
+var camYmod;
+var worldHour = 16;
+var worldMin = 20;
+var worldMonth = 4;
+var worldDay = 20;
+var worldYear = 2024;
+var worldBrightness = 31;
+const daysOfMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31];
+const unitLoop=UnitGroup(12);
+const aiLoop=UnitGroup(128);
+const buttonTimer=[0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0];//offset player*6
+const playerHeat = [0,0,0,0,0,0];
+const playerMoney = [100,100,100,100,100,100];
+const playerEPD = [0,0,0,0,0,0];
+const playerCar = [0,0,0,0,0,0];
+const playerUID = [0,1,2,3,7,8];
+const playerWep = [0,0,0,0,0,0];
+const civSpawned = EUDArray(TLCTools.civX.length);
+const buildingSpawned = EUDArray(TLCTools.buildingX.length);
+
+function displayWantedLevel(player){
+	setcurpl(player);
+	if(playerHeat[player]>5990){
+		printAt(2,"\x12\x04★★★★★★    ");
+		return;
+	}else if(playerHeat[player]>4990){
+		printAt(2,"\x12\x04★★★★★    ");
+		return;
+	}else if(playerHeat[player]>3990){
+		printAt(2,"\x12\x04★★★★    ");
+		return;
+	}else if(playerHeat[player]>2990){
+		printAt(2,"\x12\x04★★★    ");
+		return;
+	}else if(playerHeat[player]>1990){
+		printAt(2,"\x12\x04★★    ");
+		return;
+	}else if(playerHeat[player]>990){
+		printAt(2,"\x12\x04★    ");
+		return;
+	}else if(playerHeat[player]<991){
+		printAt(2,"\x12    ");
+	}
+}
+
+function beforeTriggerExec(){
+	once{
+		
+		//bg.BGMStart();
+		//bg.BGMResume();
+		addloc(7,0,0);
+		foreach(player : EUDLoopPlayer()) {
+			CreateUnit(1,47,7,player);
+			setcurpl(player);
+			//bg.SetBGM(0);
+			//bg.BGMStart();
+		}
+	}
+	
+	if(!introOver){
+	sceneTimer++;
+	foreach(player : EUDLoopPlayer()) {
+		if(MemoryEPD(EPD(msqcvar.VKeyDown_F) + player, Exactly, 1)){
+			movieOver=1;
+		}
+	}
+	switch (sceneTimer){
+		case 55:
+			//set camera pos
+			camX = 7000;
+			camY = 1100;
+			//set camera movement
+			camXmod = -2;
+			camYmod = 4;
+			movieStarted=1;
+			break;
+			
+		case 195:
+			//set camera pos
+			camX = 7500;
+			camY = 7500;
+			//set camera movement
+			camXmod = -6;
+			camYmod = -1;
+			break;
+			
+		case 335:
+			//set camera pos
+			camX = 2600;
+			camY = 6300;
+			//set camera movement
+			camXmod = 0;
+			camYmod = -4;
+			break;
+			
+		case 475:
+			//set camera pos
+			camX = 4444;
+			camY = 4675;
+			//set camera movement
+			camXmod = 8;
+			camYmod = 0;
+			break;
+			
+		case 615:
+			//set camera pos
+			camX = 4350;
+			camY = 1825;
+			//set camera movement
+			camXmod = -2;
+			camYmod = 4;
+			break;
+			
+		case 755:
+			//set camera pos
+			camX = 4000;
+			camY = 6500;
+			//set camera movement
+			camXmod = -4;
+			camYmod = -4;
+			break;
+			
+		case 895:
+			//set camera pos
+			camX = 6150;
+			camY = 5750;
+			//set camera movement
+			camXmod = 4;
+			camYmod = -4;
+			break;
+			
+		case 1035:
+			//set camera pos
+			camX = 2500;
+			camY = 4600;
+			//set camera movement
+			camXmod = 0;
+			camYmod = 4;
+			break;
+			
+		case 1175:
+			//set camera pos
+			camX = 6350;
+			camY = 1100;
+			//set camera movement
+			camXmod = -4;
+			camYmod = 4;
+			break;
+			
+		case 1315:
+			//set camera pos
+			camX = 7500;
+			camY = 2000;
+			//set camera movement
+			camXmod = -4;
+			camYmod = 1;
+			break;
+			
+		case 1455:
+			//set camera pos
+			camX = 3650;
+			camY = 4500;
+			//set camera movement
+			camXmod = 1;
+			camYmod = -2;
+			break;
+			
+		case 1595:
+			//set camera pos
+			camX = 2750;
+			camY = 750;
+			//set camera movement
+			camXmod = 3;
+			camYmod = 0;
+			break;
+			
+		case 1735:
+			//set camera pos
+			camX = 3650;
+			camY = 1500;
+			//set camera movement
+			camXmod = 1;
+			camYmod = 3;
+			break;
+			
+		case 1875:
+			//set camera pos
+			camX = 2400;
+			camY = 3800;
+			//set camera movement
+			camXmod = 4;
+			camYmod = -1;
+			break;
+			
+		case 2015:
+			//set camera pos
+			camX = 2275;
+			camY = 7000;
+			//set camera movement
+			camXmod = 3;
+			camYmod = -3;
+			break;
+			
+		case 2155:
+			//set camera pos
+			camX = 7350;
+			camY = 7100;
+			//set camera movement
+			camXmod = -1;
+			camYmod = -3;
+			break;
+			
+		case 2275:
+			//set camera pos
+			camX = 1300;
+			camY = 500;
+			//set camera movement
+			camXmod = 0;
+			camYmod = 4;
+			break;
+			
+		case 2637:
+			camXmod = 0;
+			camYmod = 0;
+			movieOver = 1;
+			break;
+	}
+	if(movieStarted){
+		camX+=camXmod;
+		camY+=camYmod;
+		setloc(7,camX,camY);
+		MoveUnit(All,47,AllPlayers,64,7);
+		eprintAll("Press F to skip intro");
+		foreach(player : EUDLoopPlayer()){
+			setcurpl(player);
+			CenterView(7);
+		}
+	}
+	if(movieOver){
+		bwrite(0x657A9C,screenBrightness/10);
+		eprintAll("");
+		if(screenBrightness>3){
+			screenBrightness-=4;
+		}else {
+			screenBrightness=0;
+		}
+		if(!screenBrightness){
+			introOver = 1;
+			RemoveUnit(47,AllPlayers);
+			//bg.BGMStop();
+		}
+	}
+	}
+	if(introOver){
+		once{
+		
+			//?????!!!!!!!++++++++++ FIRST 19 LOCATIONS RESERVED!!!!!!!! +++++++++++++!!!!!!!!!??????\\
+			//?????!!!!!!!++++++++++ FIRST 19 LOCATIONS RESERVED!!!!!!!! +++++++++++++!!!!!!!!!??????\\
+			//?????!!!!!!!++++++++++ FIRST 19 LOCATIONS RESERVED!!!!!!!! +++++++++++++!!!!!!!!!??????\\
+			//?????!!!!!!!++++++++++ FIRST 19 LOCATIONS RESERVED!!!!!!!! +++++++++++++!!!!!!!!!??????\\
+			//?????!!!!!!!++++++++++ FIRST 19 LOCATIONS RESERVED!!!!!!!! +++++++++++++!!!!!!!!!??????\\
+			
+			
+			//create locations
+			//mouse locations: 1-6 //reserved for mouse location //player+1
+			//spawn location: 7 //used to spawn units
+			//centerview locations: 8-13 //active area grid
+			//detection locations: 14-19 //used for player detection
+
+			//AI Loops: 162-255 // used for ai stuff
+			
+			for(var i = 162;i<256;i++){
+				addloc(i,0,0);
+			}
+			
+			
+			
+			setcurpl(6);
+			SetAllianceStatus(Force1,Ally);
+			
+			foreach(player : EUDLoopPlayer()) {
+				settblf(playerUID[player]+1,0,"\x05{:n}",player);
+				bwrite(0x58D2B0+(46*player)+6,99);
+				/*bwrite(0x58D2B0+(46*player)+7,99);
+				bwrite(0x58D2B0+(46*player)+8,99);
+				bwrite(0x58D2B0+(46*player)+9,99);
+				bwrite(0x58D2B0+(46*player)+10,99);
+				bwrite(0x58D2B0+(46*player)+11,99);*/
+			}
+			
+			bwrite(0x657A9C,31);
+		}
+		
+		if(Bring(11,AtLeast,1,229,64)){
+			RemoveUnit(229,11);
+		}
+		
+		foreach(player : EUDLoopPlayer()) {
+			const Cselection = CUnit.from_read(EPD(0x6284E8) + 12 * player);
+			const W = MemoryEPD(EPD(msqcvar.VKeyPress_W) + player, Exactly, 1);//+0
+			const S = MemoryEPD(EPD(msqcvar.VKeyPress_S) + player, Exactly, 1);//+1
+			const A = MemoryEPD(EPD(msqcvar.VKeyPress_A) + player, Exactly, 1);//+2
+			const D = MemoryEPD(EPD(msqcvar.VKeyPress_D) + player, Exactly, 1);//+3
+			const Shift=MemoryEPD(EPD(msqcvar.VKeyPress_SHIFT) + player, Exactly, 1)&&(MemoryEPD(EPD(msqcvar.VKeyPress_W) + player, Exactly, 1)||MemoryEPD(EPD(msqcvar.VKeyPress_S) + player, Exactly, 1)||MemoryEPD(EPD(msqcvar.VKeyPress_A) + player, Exactly, 1)||MemoryEPD(EPD(msqcvar.VKeyPress_D) + player, Exactly, 1));//+4
+			const rMouse = MemoryEPD(EPD(msqcvar.VMousePress_R) + player, Exactly, 1);//+5
+			const F = MemoryEPD(EPD(msqcvar.VKeyDown_F) + player, Exactly, 1);
+			const Tab = MemoryEPD(EPD(msqcvar.VKeyDown_TAB) + player, Exactly, 1);
+			const Q = MemoryEPD(EPD(msqcvar.VKeyDown_Q) + player, Exactly, 1);
+			
+			setcurpl(player);
+			printAt(1,"\x12${}    ",playerMoney[player]);
+			displayWantedLevel(player);
+			
+			printAt(6,"{}",Cselection.orderTargetUnit);
+			
+			if(!getgametick()%4){
+				if(playerHeat[player]>7){
+					if(playerHeat[player]>5990){
+						playerHeat[player]+=6;
+					} else {
+						playerHeat[player]+=playerHeat[player] / 1000;
+					}
+					playerHeat[player]-=7;
+				} else {
+					playerHeat[player]=0;
+				}
+			}
+	
+			if(Bring(Force2,AtMost,0,229,player+14)) {
+				Cselection.orderTargetUnit = 0;
+			}
+			
+			if(Cselection.owner==player&&Cselection.unitID==playerUID[player]&&Cselection.orderID){//unit movement
+				
+				if(Cselection.movementState==2){
+					Cselection.movementState=24;
+				}
+				
+				setloc(player+14,Cselection.posX-8,Cselection.posY-8,Cselection.posX+8,Cselection.posY+8);
+				tt.PolarLocation(player+14,12,(((Cselection.currentDirection1 * 360) / 255)-90+360) % 360);
+
+				if(F){
+					if(Cselection.orderTargetUnit){
+						const detectedUnit = CUnit(Cselection.orderTargetUnit);
+						if(detectedUnit.unitID == 15 && !detectedUnit.unknown0x86){
+							detectedUnit.unknown0x86=1;
+							const stolenMoney = TLCTools.randNum(100);
+							playerMoney[player]+=stolenMoney;
+							setcurpl(player);
+							if(!stolenMoney){
+								detectedUnit.orderID=0;
+								playerHeat[player]+=3000;
+								Cselection.unknown0x8C+=50;
+								eprintf("Poor bastard is dead broke.. | +50 XP");
+								Cselection.killCount++;
+								Cselection.unknown0x66++;
+							} else {
+								playerHeat[player]+=stolenMoney*5;
+								Cselection.unknown0x8C+=stolenMoney / 5;
+								eprintf("Mugging +${} | +{} XP", stolenMoney,stolenMoney / 5);
+								detectedUnit.moveTargetX=TLCTools.randNum(256*32);
+								detectedUnit.moveTargetY=TLCTools.randNum(256*32);
+								detectedUnit.movementState=24;
+							}
+							
+						} else if(detectedUnit.unknown0x8C){
+							TLCTools.loadInterior(detectedUnit.unknown0x8C,player);
+						} else if(detectedUnit.unitID==16){
+							TLCTools.leaveInterior(player);
+						}
+					}
+				}
+				
+				if(Q){
+					if(playerWep[player]>4){
+						playerWep[player]=0;
+					} else {
+						playerWep[player]++;
+					}
+       	         		bwrite(0x6636B8 + playerUID[player],playerWep[player]);
+       	         		bwrite(0x6616E0 + playerUID[player],playerWep[player]);
+       	         		setloc(7,32,8096);
+       	         		CreateUnit(1,playerUID[player],7,player);
+       	         		RemoveUnitAt(All,playerUID[player],7,player);
+       	         		
+				}
+	
+				if(W){
+					buttonTimer[(player*6)+0]=2;
+				} else if(buttonTimer[(player*6)+0]>0) {
+					buttonTimer[(player*6)+0]--;
+				}
+				
+				if(S){
+					buttonTimer[(player*6)+1]=2;
+				} else if(buttonTimer[(player*6)+1]>0) {
+					buttonTimer[(player*6)+1]--;
+				}
+				
+				if(A){
+					buttonTimer[(player*6)+2]=2;
+				} else if(buttonTimer[(player*6)+2]>0) {
+					buttonTimer[(player*6)+2]--;
+				}
+				
+				if(D){
+					buttonTimer[(player*6)+3]=2;
+				} else if(buttonTimer[(player*6)+3]>0) {
+					buttonTimer[(player*6)+3]--;
+				}
+				
+				if(Shift){
+					buttonTimer[(player*6)+4]=2;
+				} else if(buttonTimer[(player*6)+4]>0) {
+					buttonTimer[(player*6)+4]--;
+				}
+				
+				if(rMouse){
+					buttonTimer[(player*6)+5]=2;
+				} else if(buttonTimer[(player*6)+5]>0) {
+					buttonTimer[(player*6)+5]--;
+				}
+				
+				if(buttonTimer[(player*6)+4]>0&&Cselection.energy>127){
+					Cselection.topSpeed=1536;
+					Cselection.energy-=128;
+				} else if(Cselection.energy<200*256){
+					Cselection.topSpeed=1024;
+					Cselection.energy+=64+(Cselection.unknown0x26*4);
+				}
+				
+				var pos = Cselection.pos;
+	
+				if (buttonTimer[(player*6)+0]>0) {
+					DoActions(pos.SubtractNumberX(16*65536, 0xFFFF0000));
+				} else if (buttonTimer[(player*6)+1]>0) {
+					pos += 16*65536;
+				}
+	
+				if (buttonTimer[(player*6)+2]>0) {
+					DoActions(pos.SubtractNumberX(16, 0xFFFF));
+				} else if (buttonTimer[(player*6)+3]>0) {
+					pos += 16;
+				}
+	
+				Cselection.moveTargetPos = pos;
+	
+				setcurpl(player);
+				setloc(player+8,Cselection.posX-512,Cselection.posY-512,Cselection.posX+512,Cselection.posY+512);
+				CenterView(player+8);
+				
+				if (buttonTimer[(player*6)+5]>0&&MemoryEPD(EPD(msqcvar.VKeyPress_SHIFT) + player, Exactly, 1)) {
+					//CreateUnit(1,15,8,6);
+				}
+			}
+			
+			if(Bring(player,AtMost,0,playerUID[player],64)){
+				setloc(7,5586,1360);
+				//setloc(7,3500,700);
+				const nextUnit = CUnit.from_read(EPD(0x628438));
+				CreateUnit(1,playerUID[player],7,player);
+				if (!Memory(0x628438, Exactly, nextUnit.ptr)) {
+					tt.hotkeyUnitEPD(nextUnit,player,1,0);
+					playerEPD[player]=nextUnit;
+					nextUnit.energy=200*256;
+					nextUnit.movementState=24;
+					unitLoop.add(nextUnit);
+					TLCTools.forceSelect(player,nextUnit.ptr);
+				}
+			}
+		}
+	
+		foreach(pUnit:unitLoop.cploop){
+			const unit = CUnit(pUnit.epd);
+			const Level = unit.unknown0x26;
+			const requiredXP = 3*Level*Level+7*Level+10;
+	
+			if(unit.unitID==91&&unit.buildQueue34){
+				const targetUnit=CUnit(unit.buildQueue34);
+				unit.posX=targetUnit.posX;
+				unit.posY=targetUnit.posY;
+			}
+	
+			if(unit.orderTarget && !CUnit(unit.orderTarget).orderID){
+				if(unit.killCount>unit.unknown0x66){
+					unit.unknown0x8C+=(wread(0x663EB8 + CUnit(unit.orderTarget).unitID * 2)/10);
+					unit.unknown0x66=unit.killCount;
+				}
+			}
+			
+			if(unit.unknown0x8C>=requiredXP){
+				unit.unknown0x8C-=requiredXP;
+				unit.unknown0x26++;
+				unit.rankIncrease++;
+				
+				SetMemory(0x662350 + playerUID[unit.owner] * 4, 7, (40+(unit.unknown0x26*5))*256);//set unit id 40 hp
+				unit.hp+=5*256;
+				
+				setloc(7,unit.posX,unit.posY);
+				const nextUnit = CUnit.from_read(EPD(0x628438));
+				CreateUnit(1,91,7,unit.owner);
+				if (!Memory(0x628438, Exactly, nextUnit.ptr)) {
+					unitLoop.add(nextUnit);
+					nextUnit.buildQueue34=unit;
+					nextUnit.removeTimer=12;
+				}
+			}
+	
+			pUnit.set_cp(0x4D / 4);
+			foreach(dead:pUnit.dying) {
+			}
+		}
+
+		if(!getgametick()%24){
+			if(worldMin >= 59){
+				worldMin = 0;
+				if(worldHour >= 23){
+					worldHour = 0;
+					if(worldDay==daysOfMonth[worldMonth]){
+						if(worldMonth==12){
+							worldMonth=1;
+							worldYear++;
+							worldDay=1;
+						} else {
+							worldMonth++;
+							worldDay=1;
+						}
+					} else {
+						worldDay++;
+					}
+				} else {
+					worldHour++;
+				}
+			} else {
+				worldMin++;
+				if (worldHour == 6) {
+					worldBrightness = (worldMin * (31 - 12) / 60) + 12;
+					bwrite(0x657A9C, worldBrightness);// Increase brightness from 12 to 31 from 6 AM to 7 AM
+				} else if (worldHour == 21) {
+					worldBrightness = 31 - (worldMin * (31 - 12) / 60);
+					bwrite(0x657A9C, worldBrightness);// Decrease brightness from 31 to 12 from 9 PM to 10 PM
+				}
+			}
+		}
+		
+		const q, r = div(worldMin,10);
+		if(worldHour == 0){
+			printAllAt(0,"\x12{}/{}/{} 12:{}{} AM    ",worldMonth,worldDay,worldYear-2000,q,r);
+		} else if(worldHour < 12){
+			printAllAt(0,"\x12{}/{}/{} {}:{}{} AM    ",worldMonth,worldDay,worldYear-2000,worldHour,q,r);
+		} else if(worldHour > 12){
+			printAllAt(0,"\x12{}/{}/{} {}:{}{} PM    ",worldMonth,worldDay,worldYear-2000,worldHour-12,q,r);
+		} else{
+			printAllAt(0,"\x12{}/{}/{} 12:{}{} PM    ",worldMonth,worldDay,worldYear-2000,q,r);
+		}
+	}
+	
+	TLCTools.runAI();
+
+	foreach(ptr, epd : EUDLoopPlayerUnit(6) ) {
+		const unit = CUnit(epd);
+
+		if(unit.unknown0x26){
+			var despawn = 0;
+			const unitX, unitY = unit.posX, unit.posY;
+			for(var i = 0;i<6;i++){
+				if(playerexist(i)){
+					const pUnit = CUnit(playerEPD[i]);
+					const playerX, playerY = pUnit.posX, pUnit.posY;
+					const distance = TLCTools.calculateDistance(playerX,playerY,unitX,unitY);
+					
+					if(distance>475*475){
+						despawn++;
+					}
+				}
+			}
+			if(despawn){
+				if(unit.unitID==15){
+					civSpawned[unit.unknown0x26]=0;
+				} else {
+					buildingSpawned[unit.unknown0x26]=0;
+				}
+				unit.remove();
+			}
+		}
+	}
+
+	for(var i = 1;i<TLCTools.buildingX.length;i++){
+		
+		if(buildingSpawned[i]<1){
+			foreach(player : EUDLoopPlayer()){
+				const pUnit = CUnit(playerEPD[player]);
+				const playerX, playerY = pUnit.posX, pUnit.posY;
+				const distance = TLCTools.calculateDistance(playerX,playerY,TLCTools.buildingX[i],TLCTools.buildingY[i]);
+				
+				if(distance<475*475){
+					setloc(194,TLCTools.buildingX[i],TLCTools.buildingY[i]);
+					buildingSpawned[i]=1;
+					const nextUnit = CUnit.from_read(EPD(0x628438));
+					CreateUnit(1,TLCTools.buildingUnit[i],194,6);
+					if (!Memory(0x628438, Exactly, nextUnit.ptr)) {
+						nextUnit.set_color(TLCTools.buildingColor[i]);
+						nextUnit.unknown0x8C=i;
+						nextUnit.unknown0x26=i;
+						aiLoop.add(nextUnit);
+					}
+				}
+			}
+		}
+	}
+	
+	for(var i = 1;i<TLCTools.civX.length;i++){
+		
+		if(civSpawned[i]<1){
+			foreach(player : EUDLoopPlayer()){
+				const pUnit = CUnit(playerEPD[player]);
+				const playerX, playerY = pUnit.posX, pUnit.posY;
+				const distance = TLCTools.calculateDistance(playerX,playerY,TLCTools.civX[i],TLCTools.civY[i]);
+				
+				if(distance<475*475){
+					setloc(192,TLCTools.civX[i],TLCTools.civY[i]);
+					civSpawned[i]=1;
+					const nextUnit = CUnit.from_read(EPD(0x628438));
+					CreateUnit(1,15,192,6);
+					if (!Memory(0x628438, Exactly, nextUnit.ptr)) {
+						aiLoop.add(nextUnit);
+						nextUnit.set_color(TLCTools.randNum(7));
+						nextUnit.unknown0x26=i;
+					}
+				}
+			}
+		}
+	}
+	
+	foreach(aiUnit:aiLoop.cploop){
+		const unit = CUnit(aiUnit.epd);
+		
+		for (var i = 0; i < 6; i++) {
+			if (tt.CBringEPD(unit, i+14, 67)) {
+				CUnit(playerEPD[i]).orderTargetUnit = unit;
+			}
+		}
+	
+		aiUnit.set_cp(0x4D / 4);
+		foreach(dead:aiUnit.dying) {
+		}
+	}
+}

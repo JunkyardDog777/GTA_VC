@@ -1,0 +1,78 @@
+import PluginVariables as msqcvar;
+const displaytext = StringBuffer();
+const 	       dot = EUDArray(3);
+const 	Loading = EUDArray(6);
+const playerHeat = EUDArray(6);
+
+
+
+function TextRefresh(player) {
+ 			displaytext.printfAt(0,"     ");
+ 			displaytext.printfAt(1,"     ");
+ 			displaytext.printfAt(2,"     ");
+ 			displaytext.printfAt(3,"     ");
+ 			displaytext.printfAt(4,"     ");
+ 			displaytext.printfAt(5,"     ");
+ 			displaytext.printfAt(6,"     ");
+ 			displaytext.printfAt(7,"     ");
+ 			displaytext.printfAt(8,"     ");
+ 			displaytext.printfAt(9,"     ");
+ 			displaytext.printfAt(10,"   ");	
+ 			 
+}
+function eTextRefresh(player) {
+			eprintf("");
+ 			
+}
+
+function displayWantedLevel(player){
+	setcurpl(player);
+	if(playerHeat[player]>5990){
+		printAt(2,"\x12\x04★★★★★★    ");
+		return;
+	}else if(playerHeat[player]>4990){
+		printAt(2,"\x12\x04★★★★★    ");
+		return;
+	}else if(playerHeat[player]>3990){
+		printAt(2,"\x12\x04★★★★    ");
+		return;
+	}else if(playerHeat[player]>2990){
+		printAt(2,"\x12\x04★★★    ");
+		return;
+	}else if(playerHeat[player]>1990){
+		printAt(2,"\x12\x04★★    ");
+		return;
+	}else if(playerHeat[player]>990){
+		printAt(2,"\x12\x04★    ");
+		return;
+	}else if(playerHeat[player]<991){
+		printAt(2,"\x12    ");
+	}
+}
+
+function LoadingScreen(player, percent){	
+
+	Loading[player] ++;
+	setcurpl(player);
+	for(var i=0; i<3;i++){ 	
+		if(Loading[player]%20 == 5+(i*5)  ){ 
+			dot[i] = 1200;}
+				else if(Loading[player]%20 == 1){
+					dot[i] = 1201;}
+	}
+	displaytext.printfAt(9,"\x13Loading, please wait{:s}{:s}{:s} ",
+	GetTBLAddr(dot[0]) ,
+	GetTBLAddr(dot[1]),
+	GetTBLAddr(dot[2])
+	);
+	displaytext.printfAt(10,"\x13({}%) ", percent);
+}
+
+
+
+
+
+
+
+
+

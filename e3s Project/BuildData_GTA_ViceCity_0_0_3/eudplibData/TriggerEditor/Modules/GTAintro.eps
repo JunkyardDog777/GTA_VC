@@ -1,0 +1,251 @@
+import PluginVariables as msqcvar;
+import TriggerEditor.TETools as tt;
+import Modules.TLCTools;
+
+var sceneTimer;
+var movieStarted;
+var movieOver;
+var screenBrightness = 310;
+var introOver;
+var camX;
+var camY;
+var camXmod;
+var camYmod;
+var worldHour = 16;
+var worldMin = 20;
+var worldMonth = 4;
+var worldDay = 20;
+var worldYear = 2024;
+var worldBrightness = 31;
+const daysOfMonth = [0,31,28,31,30,31,30,31,31,30,31,30,31];
+const unitLoop=UnitGroup(12);
+const aiLoop=UnitGroup(128);
+const buttonTimer=[0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0,	0,0,0,0,0,0];//offset player*6
+const playerHeat = [0,0,0,0,0,0];
+const playerMoney = [100,100,100,100,100,100];
+const playerEPD = [0,0,0,0,0,0];
+const playerCar = [0,0,0,0,0,0];
+const playerUID = [0,1,2,3,7,8];
+const playerWep = [0,0,0,0,0,0];
+const civSpawned = EUDArray(TLCTools.civX.length);
+const buildingSpawned = EUDArray(TLCTools.buildingX.length);
+
+
+
+function beforeTriggerExec(){
+	once{
+		
+		//bg.BGMStart();
+		//bg.BGMResume();
+		addloc(7,0,0);
+		foreach(player : EUDLoopPlayer()) {
+			CreateUnit(1,47,7,player);
+			setcurpl(player);
+			//bg.SetBGM(0);
+			//bg.BGMStart();
+		}
+	}
+	
+	if(!introOver){
+	sceneTimer++;
+	foreach(player : EUDLoopPlayer()) {
+		if(MemoryEPD(EPD(msqcvar.VKeyDown_F) + player, Exactly, 1)){
+			movieOver=1;
+		}
+	}
+	switch (sceneTimer){
+		case 55:
+			//set camera pos
+			camX = 7000;
+			camY = 1100;
+			//set camera movement
+			camXmod = -2;
+			camYmod = 4;
+			movieStarted=1;
+			break;
+			
+		case 195:
+			//set camera pos
+			camX = 7500;
+			camY = 7500;
+			//set camera movement
+			camXmod = -6;
+			camYmod = -1;
+			break;
+			
+		case 335:
+			//set camera pos
+			camX = 2600;
+			camY = 6300;
+			//set camera movement
+			camXmod = 0;
+			camYmod = -4;
+			break;
+			
+		case 475:
+			//set camera pos
+			camX = 4444;
+			camY = 4675;
+			//set camera movement
+			camXmod = 8;
+			camYmod = 0;
+			break;
+			
+		case 615:
+			//set camera pos
+			camX = 4350;
+			camY = 1825;
+			//set camera movement
+			camXmod = -2;
+			camYmod = 4;
+			break;
+			
+		case 755:
+			//set camera pos
+			camX = 4000;
+			camY = 6500;
+			//set camera movement
+			camXmod = -4;
+			camYmod = -4;
+			break;
+			
+		case 895:
+			//set camera pos
+			camX = 6150;
+			camY = 5750;
+			//set camera movement
+			camXmod = 4;
+			camYmod = -4;
+			break;
+			
+		case 1035:
+			//set camera pos
+			camX = 2500;
+			camY = 4600;
+			//set camera movement
+			camXmod = 0;
+			camYmod = 4;
+			break;
+			
+		case 1175:
+			//set camera pos
+			camX = 6350;
+			camY = 1100;
+			//set camera movement
+			camXmod = -4;
+			camYmod = 4;
+			break;
+			
+		case 1315:
+			//set camera pos
+			camX = 7500;
+			camY = 2000;
+			//set camera movement
+			camXmod = -4;
+			camYmod = 1;
+			break;
+			
+		case 1455:
+			//set camera pos
+			camX = 3650;
+			camY = 4500;
+			//set camera movement
+			camXmod = 1;
+			camYmod = -2;
+			break;
+			
+		case 1595:
+			//set camera pos
+			camX = 2750;
+			camY = 750;
+			//set camera movement
+			camXmod = 3;
+			camYmod = 0;
+			break;
+			
+		case 1735:
+			//set camera pos
+			camX = 3650;
+			camY = 1500;
+			//set camera movement
+			camXmod = 1;
+			camYmod = 3;
+			break;
+			
+		case 1875:
+			//set camera pos
+			camX = 2400;
+			camY = 3800;
+			//set camera movement
+			camXmod = 4;
+			camYmod = -1;
+			break;
+			
+		case 2015:
+			//set camera pos
+			camX = 2275;
+			camY = 7000;
+			//set camera movement
+			camXmod = 3;
+			camYmod = -3;
+			break;
+			
+		case 2155:
+			//set camera pos
+			camX = 7350;
+			camY = 7100;
+			//set camera movement
+			camXmod = -1;
+			camYmod = -3;
+			break;
+			
+		case 2275:
+			//set camera pos
+			camX = 1300;
+			camY = 500;
+			//set camera movement
+			camXmod = 0;
+			camYmod = 4;
+			break;
+			
+		case 2637:
+			camXmod = 0;
+			camYmod = 0;
+			movieOver = 1;
+			break;
+	}
+	if(movieStarted){
+		camX+=camXmod;
+		camY+=camYmod;
+		setloc(7,camX,camY);
+		MoveUnit(All,47,AllPlayers,64,7);
+		eprintAll("Press F to skip intro");
+		foreach(player : EUDLoopPlayer()){
+			setcurpl(player);
+			CenterView(7);
+		}
+	}
+	if(movieOver){
+		bwrite(0x657A9C,screenBrightness/10);
+		eprintAll("");
+		if(screenBrightness>3){
+			screenBrightness-=4;
+		}else {
+			screenBrightness=0;
+		}
+		if(!screenBrightness){
+			introOver = 1;
+			RemoveUnit(47,AllPlayers);
+			//bg.BGMStop();
+			}
+		}
+	}
+
+
+	
+	
+
+
+
+
+}

@@ -1,0 +1,29 @@
+import PluginVariables as msqcvar;
+/*================Start Import================*/
+/*================End Import================*/
+/*================Start Var================*/
+/*================End Var================*/
+function ClassicTriggerExec(){
+    const _origcp = getcurpl();
+    /*================Start Player 1================*/
+    if (playerexist(0))
+    {
+        setcurpl(0);
+        const cp = 0;
+        
+        {
+
+                MemoryEPD(EPD(msqcvar.VKeyPress_SHIFT) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_F) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_W) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_A) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_S) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_D) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_Q) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VKeyDown_TAB) + 0, Exactly, 1);
+                MemoryEPD(EPD(msqcvar.VMousePress_R) + 0, Exactly, 1);
+        }
+    }
+    /*================End Player 1================*/
+    setcurpl(_origcp);
+}

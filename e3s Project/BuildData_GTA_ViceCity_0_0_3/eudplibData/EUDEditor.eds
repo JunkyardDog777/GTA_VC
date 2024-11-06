@@ -1,0 +1,31 @@
+[main]
+input: ..\..\..\..\..\..\..\..\Program Files (x86)\StarCraft\Maps\GTAViceCity_0.0.4.2.7_b.scx
+output: ..\..\..\..\..\..\..\..\Program Files (x86)\StarCraft\Maps\GTAViceCity_0.0.4.2.7.scx
+[DataEditor.py]
+[ExtraDataEditor.py]
+[dataDumper]
+..\temp\custom_txt.tbl : 0x6D5A30, copy
+
+[eudTurbo]
+[TriggerEditor\_Master.eps]
+
+[MSQC]
+NotTyping ; KeyPress(SHIFT) : VKeyPress_SHIFT, 1
+NotTyping ; KeyDown(F) : VKeyDown_F, 1
+NotTyping ; KeyDown(W) : VKeyDown_W, 1
+NotTyping ; KeyDown(A) : VKeyDown_A, 1
+NotTyping ; KeyDown(S) : VKeyDown_S, 1
+NotTyping ; KeyDown(D) : VKeyDown_D, 1
+NotTyping ; KeyDown(Q) : VKeyDown_Q, 1
+NotTyping ; KeyDown(TAB) : VKeyDown_TAB, 1
+MousePress(R) : VMousePress_R, 1
+mouse : Location 248
+
+[chatEvent]
+__addr__ : 0x58D900
+__ptrAddr__ : 0x58D904
+__patternAddr__ : 0x58D908
+__lenAddr__ : 0x58D90C
+
+
+

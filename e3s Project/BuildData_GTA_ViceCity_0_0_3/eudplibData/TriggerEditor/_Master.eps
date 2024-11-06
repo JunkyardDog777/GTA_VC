@@ -1,0 +1,52 @@
+import PluginVariables as msqcvar;
+import Core;
+import Modules.GTA_TitleScreen as Title;
+import Modules.GTAintro as Intro;
+
+const displaytext = StringBuffer();
+const	      layer = EUDArray(6);
+
+
+
+function beforeTriggerExec(){
+
+	// UNIT BAG
+
+	foreach(player : EUDLoopPlayer()) {
+	
+	//KEY INPUT TAB
+	if(msqcvar.VKeyDown_F[player]){ CreateUnit(1,8,248,0);}
+	if(msqcvar.VKeyDown_W[player]){}
+	if(msqcvar.VKeyDown_A[player]){}
+	if(msqcvar.VKeyDown_S[player]){}
+	if(msqcvar.VKeyDown_D[player]){}
+	if(msqcvar.VKeyDown_F[player]){}
+	if(msqcvar.VKeyDown_F[player]){}
+	if(msqcvar.VKeyDown_F[player]){}
+	
+
+	//INIT LOADING
+	
+	if(Title.DrawGTA() <=1302){ Title.DrawGTA(); Core.LoadingScreen( player ,(Title.DrawGTA()*100)/1302);}
+	else{Intro.beforeTriggerExec();}
+	if(Title.DrawGTA() ==1302){Core.TextRefresh(player);}
+		
+		
+		
+	}
+
+
+
+
+
+
+
+
+}
+
+function onPluginStart(){
+
+}
+function afterTriggerExec(){
+
+}

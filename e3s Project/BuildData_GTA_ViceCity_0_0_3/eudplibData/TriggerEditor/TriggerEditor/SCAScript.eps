@@ -1,0 +1,46 @@
+import SCAFlexible as scf;
+import TriggerEditor.SCATool as sct;
+import TriggerEditor.SCAScriptReturn as scr;
+
+
+const st = StringBuffer();
+
+
+//리턴값 처리기
+function Exec(){
+    SetMemoryEPD(scf.FuncCommandEPD + 2, SetTo, dwread_epd(EPD(0x628448))); //Screen Coordinate X
+    SetMemoryEPD(scf.FuncCommandEPD + 3, SetTo, dwread_epd(EPD(0x628470))); //Screen Coordinate Y
+
+    scr.Exec();
+}
+
+var funcpointer;
+function execScript(funcnum, returnindex, argcount, argsArrEPD){ // 배열의 EPD를 받는다.
+    const AdvancePointer = function() {
+        SetVariables(funcpointer, 1, Add);
+        Trigger(funcpointer.AtLeast(scf.FuncLength), funcpointer.SetNumber(0));
+    };
+
+    SetMemoryEPD(scf.FuncDataEPD + funcpointer, SetTo, funcnum);
+    AdvancePointer();
+    SetMemoryEPD(scf.FuncDataEPD + funcpointer, SetTo, returnindex);
+    AdvancePointer();
+    SetMemoryEPD(scf.FuncDataEPD + funcpointer, SetTo, argcount);
+    AdvancePointer();
+
+    for (var i = 0; i < argcount ; i++){
+        repmovsd_epd(scf.FuncDataEPD + funcpointer, argsArrEPD + i, 1); // 배열 값을 4bytes 만큼 복사한다.
+        AdvancePointer();
+    }
+    
+    SetMemoryEPD(scf.FuncCommandEPD, SetTo, funcpointer);
+    SetMemoryEPD(scf.FuncCommandEPD, Add, 1);
+}
+
+function writeVariable(index, value){
+    SetMemoryEPD(scf.SCAScriptVarEPD + index, SetTo, value);
+}
+
+function readVariable(index){
+    return dwread_epd(scf.SCAScriptVarEPD + index);
+}
